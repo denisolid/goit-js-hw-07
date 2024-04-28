@@ -27,10 +27,11 @@ const images = [
 
 const gallery = document.querySelector(".gallery");
 const galleryItems = images
-    .slice(0, 3)
     .map((image) => {
         const li = document.createElement("li");
+        li.classList.add('list-picture');
         const img = document.createElement("img");
+        img.classList.add('picture');
         img.src = image.url;
         img.alt = image.alt;
         li.append(img);
