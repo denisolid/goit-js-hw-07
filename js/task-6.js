@@ -1,41 +1,42 @@
-function getRandomHexColor() {
-  return `#${Math.floor(Math.random() * 16777215)
-    .toString(16)
-    .padStart(6, 0)}`;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.querySelector("#controls input");
+  const createButton = document.querySelector("button[data-create]");
+  const destroyButton = document.querySelector("button[data-destroy]");
+  const boxesContainer = document.querySelector("#boxes");
 
-function createBoxes(amount) {
-  container.innerHTML = "";
-  let size = 30;
-  for (let i = 1; i <= amount; i++) {
-    const box = document.createElement("div");
-    box.style.width = `${size}px`
-    box.style.height = `${size}px`
-    box.style.background = getRandomHexColor();
-    container.appendChild(box);
-    size += 10;
+  function getRandomHexColor() {
+    return `#${Math.floor(Math.random() * 16777215)
+      .toString(16)
+      .padStart(6, "0")}`;
   }
-}
 
-const btnCreate = document.querySelector(`button[data-create]`);
-const input = document.querySelector(`input[type="number"]`);
-const container = document.getElementById('boxes');
-const btnDestroy = document.querySelector(`button[data-destroy]`);
-btnCreate.addEventListener("click", () => {
-  const min = parseInt(input.getAttribute("min"));
-  const max = parseInt(input.getAttribute("max"));
-  console.log(min);
-  if (isNaN(input.value) || input.value < min || input.value > max) {
-    input.value = '';
-    return;
+  function createBoxes(amount) {
+    const boxes = [];
+    let size = 30;
+    for (let i = 0; i < amount; i++) {
+      const box = document.createElement("div");
+      box.style.width = `${size}px`;
+      box.style.height = `${size}px`;
+      box.style.backgroundColor = getRandomHexColor();
+      boxes.push(box);
+      size += 10;
+    }
+    boxesContainer.append(...boxes);
   }
-  else {
-    createBoxes(input.value);
-    input.value = '';
+
+  function destroyBoxes() {
+    boxesContainer.innerHTML = "";
   }
-})
 
-btnDestroy.addEventListener("click", () => {
-  container.innerHTML = "";
-})
+  createButton.addEventListener("click", () => {
+    const amount = Number(input.value);
+    if (amount >= 1 && amount <= 100) {
+      destroyBoxes();
+      createBoxes(amount);
+      input.value = "";
 
+    }
+  });
+
+  destroyButton.addEventListener("click", destroyBoxes);
+});
